@@ -13,13 +13,13 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 
-const ProblemIdLazyRouteImport = createFileRoute('/$problemId')()
+const R3330LazyRouteImport = createFileRoute('/3330')()
 
-const ProblemIdLazyRoute = ProblemIdLazyRouteImport.update({
-  id: '/$problemId',
-  path: '/$problemId',
+const R3330LazyRoute = R3330LazyRouteImport.update({
+  id: '/3330',
+  path: '/3330',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/$problemId.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/3330.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -28,37 +28,37 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/$problemId': typeof ProblemIdLazyRoute
+  '/3330': typeof R3330LazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/$problemId': typeof ProblemIdLazyRoute
+  '/3330': typeof R3330LazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/$problemId': typeof ProblemIdLazyRoute
+  '/3330': typeof R3330LazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/$problemId'
+  fullPaths: '/' | '/3330'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/$problemId'
-  id: '__root__' | '/' | '/$problemId'
+  to: '/' | '/3330'
+  id: '__root__' | '/' | '/3330'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ProblemIdLazyRoute: typeof ProblemIdLazyRoute
+  R3330LazyRoute: typeof R3330LazyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/$problemId': {
-      id: '/$problemId'
-      path: '/$problemId'
-      fullPath: '/$problemId'
-      preLoaderRoute: typeof ProblemIdLazyRouteImport
+    '/3330': {
+      id: '/3330'
+      path: '/3330'
+      fullPath: '/3330'
+      preLoaderRoute: typeof R3330LazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -73,7 +73,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ProblemIdLazyRoute: ProblemIdLazyRoute,
+  R3330LazyRoute: R3330LazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
