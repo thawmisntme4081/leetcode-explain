@@ -8,9 +8,18 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ProblemIdLazyRouteImport = createFileRoute('/$problemId')()
+
+const ProblemIdLazyRoute = ProblemIdLazyRouteImport.update({
+  id: '/$problemId',
+  path: '/$problemId',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/$problemId.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +28,39 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$problemId': typeof ProblemIdLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$problemId': typeof ProblemIdLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$problemId': typeof ProblemIdLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/$problemId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/$problemId'
+  id: '__root__' | '/' | '/$problemId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ProblemIdLazyRoute: typeof ProblemIdLazyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/$problemId': {
+      id: '/$problemId'
+      path: '/$problemId'
+      fullPath: '/$problemId'
+      preLoaderRoute: typeof ProblemIdLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +73,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ProblemIdLazyRoute: ProblemIdLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

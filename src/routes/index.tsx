@@ -25,7 +25,7 @@ function App() {
         </TabsList>
         {ITEMS.map((item) => (
           <TabsContent key={item.value} value={item.value}>
-            <ProblemList difficulty={item.value} />
+            <ProblemList difficulty={item.value as Difficulty} />
           </TabsContent>
         ))}
       </Tabs>
