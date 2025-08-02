@@ -1,21 +1,18 @@
-import ProblemList from "~/components/ProblemList";
-import type { Route } from "./+types/home";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import ProblemList from "@/components/Homepage/ProblemList"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { createFileRoute } from "@tanstack/react-router"
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Leetcode Explanation" },
-    { name: "description", content: "Leetcode Explanation Summary" },
-  ];
-}
+export const Route = createFileRoute("/")({
+  component: App,
+})
 
 const ITEMS = [
   { value: "easy", label: "Easy" },
   { value: "medium", label: "Medium" },
   { value: "hard", label: "Hard" },
-];
+]
 
-export default function Home() {
+function App() {
   return (
     <main className="flex justify-center p-5">
       <Tabs defaultValue={ITEMS[0].value} className="w-[700px]">
@@ -33,5 +30,5 @@ export default function Home() {
         ))}
       </Tabs>
     </main>
-  );
+  )
 }

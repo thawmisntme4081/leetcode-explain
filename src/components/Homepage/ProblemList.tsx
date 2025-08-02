@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
 
-import { Lock, Search } from "lucide-react";
-import { Badge } from "./ui/badge";
-import { Card, CardContent } from "./ui/card";
-import { Input } from "./ui/input";
+import { Lock, Search } from "lucide-react"
+import { Badge } from "../ui/badge"
+import { Card, CardContent } from "../ui/card"
+import { Input } from "../ui/input"
 import {
   Table,
   TableBody,
@@ -11,13 +11,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./ui/table";
+} from "../ui/table"
 
 interface Problem {
-  id: number;
-  title: string;
-  isPremium: boolean;
-  tags: string[];
+  id: number
+  title: string
+  isPremium: boolean
+  tags: string[]
 }
 
 const problems: Problem[] = [
@@ -81,26 +81,16 @@ const problems: Problem[] = [
     isPremium: false,
     tags: ["String", "Dynamic Programming", "Recursion"],
   },
-  {
-    id: 156,
-    title: "Binary Tree Upside Down",
-    isPremium: true,
-    tags: ["Tree", "Depth-First Search", "Binary Tree"],
-  },
-  {
-    id: 159,
-    title: "Longest Substring with At Most Two Distinct Characters",
-    isPremium: true,
-    tags: ["Hash Table", "String", "Sliding Window"],
-  },
-];
+]
 
 type Props = {
-  difficulty: string;
-};
+  difficulty: string
+}
 
 export default function ProblemList({ difficulty }: Props) {
-  const [searchTerm, setSearchTerm] = useState("");
+  console.log(difficulty)
+
+  const [searchTerm, setSearchTerm] = useState("")
 
   const filteredProblems = useMemo(() => {
     return problems.filter((problem) => {
@@ -108,10 +98,10 @@ export default function ProblemList({ difficulty }: Props) {
         problem.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         problem.tags.some((tag) =>
           tag.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-      return matchesSearch;
-    });
-  }, [searchTerm]);
+        )
+      return matchesSearch
+    })
+  }, [searchTerm])
 
   return (
     <div className="mt-4">
@@ -132,7 +122,6 @@ export default function ProblemList({ difficulty }: Props) {
               <TableRow>
                 <TableHead>Id</TableHead>
                 <TableHead>Title</TableHead>
-                <TableHead className="w-28">Tags</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -153,9 +142,7 @@ export default function ProblemList({ difficulty }: Props) {
                         )}
                       </div>
                     </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex gap-1 mt-2">
                       {problem.tags.map((tag) => (
                         <Badge
                           key={tag}
@@ -182,5 +169,5 @@ export default function ProblemList({ difficulty }: Props) {
         </div>
       )}
     </div>
-  );
+  )
 }
