@@ -6,9 +6,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table"
+} from "../../components/ui/table"
 import { Lock } from "lucide-react"
-import { Badge } from "../ui/badge"
+import { Badge } from "../../components/ui/badge"
 
 type Props = {
   problems: Problem[]
@@ -16,8 +16,8 @@ type Props = {
 
 const TableProblems = ({ problems }: Props) => {
   return (
-    <Table>
-      <TableHeader>
+    <Table className="mt-4">
+      <TableHeader className="bg-gray-200">
         <TableRow>
           <TableHead className="w-16">Id</TableHead>
           <TableHead>Title</TableHead>

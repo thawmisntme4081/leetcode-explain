@@ -1,8 +1,7 @@
 import { useMemo, useState } from "react"
 
 import { Search } from "lucide-react"
-import { Card, CardContent } from "../ui/card"
-import { Input } from "../ui/input"
+import { Input } from "../../components/ui/input"
 
 import { getProblems } from "@/data/problems"
 import TableProblems from "./TableProblems"
@@ -37,11 +36,7 @@ export default function ProblemList({ difficulty }: Props) {
         />
       </div>
 
-      <Card className="mt-4 p-0 overflow-hidden">
-        <CardContent className="p-0">
-          <TableProblems problems={filteredProblems} />
-        </CardContent>
-      </Card>
+      <TableProblems problems={filteredProblems} />
 
       {filteredProblems.length === 0 && (
         <div className="text-center py-12">

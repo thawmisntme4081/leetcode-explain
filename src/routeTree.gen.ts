@@ -14,12 +14,18 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 
 const R3330LazyRouteImport = createFileRoute('/3330')()
+const R1LazyRouteImport = createFileRoute('/1')()
 
 const R3330LazyRoute = R3330LazyRouteImport.update({
   id: '/3330',
   path: '/3330',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/3330.lazy').then((d) => d.Route))
+const R1LazyRoute = R1LazyRouteImport.update({
+  id: '/1',
+  path: '/1',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/1.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -28,27 +34,31 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/3330'
+  fullPaths: '/' | '/1' | '/3330'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/3330'
-  id: '__root__' | '/' | '/3330'
+  to: '/' | '/1' | '/3330'
+  id: '__root__' | '/' | '/1' | '/3330'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  R1LazyRoute: typeof R1LazyRoute
   R3330LazyRoute: typeof R3330LazyRoute
 }
 
@@ -59,6 +69,13 @@ declare module '@tanstack/react-router' {
       path: '/3330'
       fullPath: '/3330'
       preLoaderRoute: typeof R3330LazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/1': {
+      id: '/1'
+      path: '/1'
+      fullPath: '/1'
+      preLoaderRoute: typeof R1LazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -73,6 +90,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  R1LazyRoute: R1LazyRoute,
   R3330LazyRoute: R3330LazyRoute,
 }
 export const routeTree = rootRouteImport
