@@ -1,17 +1,17 @@
-import { useMemo, useState } from "react"
+import { useMemo, useState } from 'react'
 
-import { Search } from "lucide-react"
-import { Input } from "../../components/ui/input"
+import { Search } from 'lucide-react'
+import { Input } from '../../components/ui/input'
 
-import { getProblems } from "@/data/problems"
-import TableProblems from "./TableProblems"
+import { getProblems } from '@/data/problems'
+import TableProblems from './TableProblems'
 
 type Props = {
   difficulty: Difficulty
 }
 
 export default function ProblemList({ difficulty }: Props) {
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState('')
 
   const filteredProblems = useMemo(() => {
     return getProblems(difficulty).filter((problem) => {
@@ -25,7 +25,7 @@ export default function ProblemList({ difficulty }: Props) {
   }, [searchTerm])
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 text-card">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input

@@ -4,7 +4,7 @@ import HashMapSection from '@/components/Sections/HashMapSection'
 import InputSection from '@/components/Sections/InputSection'
 import ResultSection from '@/components/Sections/ResultSection'
 import { Card } from '@/components/ui/card'
-import { useTwoSumStore } from '@/containers/1/1.store'
+import { useTwoSumStore } from '@/store/1.store'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
@@ -106,7 +106,7 @@ function Problem1() {
   ])
 
   return (
-    <div className="max-w-3xl w-full grid gap-4">
+    <div className="max-w-3xl w-full grid gap-4 p-4">
       <InputSection
         onStart={start}
         onReset={reset}

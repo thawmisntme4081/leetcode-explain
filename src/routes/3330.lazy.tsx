@@ -1,49 +1,103 @@
-import { createLazyFileRoute } from "@tanstack/react-router"
+import { createLazyFileRoute } from '@tanstack/react-router'
 
-import i1 from "@/assets/3330/3330_01.webp"
-import i2 from "@/assets/3330/3330_02.webp"
-import i3 from "@/assets/3330/3330_03.webp"
-import i4 from "@/assets/3330/3330_04.webp"
-import i5 from "@/assets/3330/3330_05.webp"
-import i6 from "@/assets/3330/3330_06.webp"
-import i7 from "@/assets/3330/3330_07.webp"
-import i8 from "@/assets/3330/3330_08.webp"
+import { Card } from '@/components/ui/card'
+import InputSection from '@/components/Sections/InputSection'
+import InputLabel from '@/components/common/InputLabel'
+import ArraySection from '@/components/Sections/ArraySection'
+import ResultSection from '@/components/Sections/ResultSection'
+import { useEffect } from 'react'
+import { useCountCharRepeatStore } from '@/store/3330.store'
 
-import { Card, CardContent } from "@/components/ui/card"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-
-export const Route = createLazyFileRoute("/3330")({
+export const Route = createLazyFileRoute('/3330')({
   component: Problem3330,
 })
 
 function Problem3330() {
+  const {
+    animationRunning,
+    currentIndex,
+    word,
+    wordInput,
+    posNum,
+    statusMessage,
+    result,
+    set,
+    start,
+    reset,
+  } = useCountCharRepeatStore()
+
+  useEffect(() => {
+    let timerReset: NodeJS.Timeout
+    if (!animationRunning || currentIndex >= word.length - 2) {
+      if (currentIndex >= word.length - 2 && animationRunning) {
+        set('animationRunning', false)
+        timerReset = setTimeout(() => {
+          set('result', `${posNum}`)
+        }, 1000)
+      }
+      return
+    }
+
+    const timer = setTimeout(() => {
+      const char1 = word[currentIndex]
+      const char2 = word[currentIndex + 1]
+
+      if (char1 === char2) {
+        set('posNum', posNum + 1)
+        set(
+          'statusMessage',
+          `Comparing '${char1}' and '${char2}'. They are the same! The count is incremented to ${posNum + 1}.`
+        )
+      } else {
+        set(
+          'statusMessage',
+          `Comparing '${char1}' and '${char2}'. They are different. The count remains ${posNum}.`
+        )
+      }
+      set('currentIndex', currentIndex + 1)
+    }, 1000)
+
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(timerReset)
+    }
+  }, [animationRunning, currentIndex, word, posNum])
+
   return (
-    <Carousel className="w-[600px] ml-14">
-      <CarouselContent>
-        {[i1, i2, i3, i4, i5, i6, i7, i8].map((image, index) => (
-          <CarouselItem key={index}>
-            <div className="p-1">
-              <Card>
-                <CardContent className="flex aspect-auto items-center justify-center p-6">
-                  <img
-                    src={image}
-                    alt={`Image ${index + 1}`}
-                    loading={index === 0 ? "eager" : "lazy"}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className="max-w-3xl w-full grid gap-4 p-4">
+      <InputSection
+        onStart={start}
+        onReset={reset}
+        animationRunning={animationRunning}
+      >
+        <InputLabel
+          id="word"
+          label="Enter a word"
+          value={wordInput}
+          onChange={(value) => set('wordInput', value)}
+        />
+      </InputSection>
+
+      <Card>
+        <ArraySection
+          title="Word"
+          items={word}
+          foundPair={(index) =>
+            index === currentIndex || index === currentIndex + 1
+          }
+          isValid={(index) =>
+            (index === currentIndex || index === currentIndex + 1) &&
+            word[currentIndex] === word[currentIndex + 1]
+          }
+        />
+      </Card>
+
+      <ResultSection
+        loop={currentIndex}
+        maxLoop={word.length - 2}
+        statusMessage={statusMessage}
+        result={result}
+      />
+    </div>
   )
 }
