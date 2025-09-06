@@ -14,52 +14,72 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 
 const R3330LazyRouteImport = createFileRoute('/3330')()
-const R1LazyRouteImport = createFileRoute('/1')()
+const R1IndexLazyRouteImport = createFileRoute('/1/')()
+const R12LazyRouteImport = createFileRoute('/1/2')()
+const R11LazyRouteImport = createFileRoute('/1/1')()
 
 const R3330LazyRoute = R3330LazyRouteImport.update({
   id: '/3330',
   path: '/3330',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/3330.lazy').then((d) => d.Route))
-const R1LazyRoute = R1LazyRouteImport.update({
-  id: '/1',
-  path: '/1',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/1.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const R1IndexLazyRoute = R1IndexLazyRouteImport.update({
+  id: '/1/',
+  path: '/1/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/1/index.lazy').then((d) => d.Route))
+const R12LazyRoute = R12LazyRouteImport.update({
+  id: '/1/2',
+  path: '/1/2',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/1/2.lazy').then((d) => d.Route))
+const R11LazyRoute = R11LazyRouteImport.update({
+  id: '/1/1',
+  path: '/1/1',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/1/1.lazy').then((d) => d.Route))
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
+  '/1/1': typeof R11LazyRoute
+  '/1/2': typeof R12LazyRoute
+  '/1': typeof R1IndexLazyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
+  '/1/1': typeof R11LazyRoute
+  '/1/2': typeof R12LazyRoute
+  '/1': typeof R1IndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/1': typeof R1LazyRoute
   '/3330': typeof R3330LazyRoute
+  '/1/1': typeof R11LazyRoute
+  '/1/2': typeof R12LazyRoute
+  '/1/': typeof R1IndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/1' | '/3330'
+  fullPaths: '/' | '/3330' | '/1/1' | '/1/2' | '/1'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/1' | '/3330'
-  id: '__root__' | '/' | '/1' | '/3330'
+  to: '/' | '/3330' | '/1/1' | '/1/2' | '/1'
+  id: '__root__' | '/' | '/3330' | '/1/1' | '/1/2' | '/1/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  R1LazyRoute: typeof R1LazyRoute
   R3330LazyRoute: typeof R3330LazyRoute
+  R11LazyRoute: typeof R11LazyRoute
+  R12LazyRoute: typeof R12LazyRoute
+  R1IndexLazyRoute: typeof R1IndexLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -71,13 +91,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof R3330LazyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/1': {
-      id: '/1'
-      path: '/1'
-      fullPath: '/1'
-      preLoaderRoute: typeof R1LazyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -85,13 +98,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/1/': {
+      id: '/1/'
+      path: '/1'
+      fullPath: '/1'
+      preLoaderRoute: typeof R1IndexLazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/1/2': {
+      id: '/1/2'
+      path: '/1/2'
+      fullPath: '/1/2'
+      preLoaderRoute: typeof R12LazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/1/1': {
+      id: '/1/1'
+      path: '/1/1'
+      fullPath: '/1/1'
+      preLoaderRoute: typeof R11LazyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  R1LazyRoute: R1LazyRoute,
   R3330LazyRoute: R3330LazyRoute,
+  R11LazyRoute: R11LazyRoute,
+  R12LazyRoute: R12LazyRoute,
+  R1IndexLazyRoute: R1IndexLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

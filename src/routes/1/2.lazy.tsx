@@ -4,15 +4,16 @@ import HashMapSection from '@/components/Sections/HashMapSection'
 import InputSection from '@/components/Sections/InputSection'
 import ResultSection from '@/components/Sections/ResultSection'
 import { Card } from '@/components/ui/card'
-import { useTwoSumStore } from '@/store/1.store'
+import { useTitle } from '@/hooks/useTitle.hook'
+import { useTwoSumStore } from '@/store/1/hashTable.store'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
-export const Route = createLazyFileRoute('/1')({
-  component: Problem1,
+export const Route = createLazyFileRoute('/1/2')({
+  component: Problem1HashTable,
 })
 
-function Problem1() {
+function Problem1HashTable() {
   const {
     numbersInput,
     targetInput,
@@ -29,6 +30,8 @@ function Problem1() {
     reset,
     start,
   } = useTwoSumStore()
+
+  useTitle('Two Sum Hash Table')
 
   useEffect(() => {
     if (!animationRunning) {
